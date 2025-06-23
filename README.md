@@ -82,37 +82,82 @@ The `pytest.ini` file configures pytest settings, including:
 
 ## Running Tests
 
-To run tests with specific markers:
-```
-pytest -m smoke
-```
-```
+To run the code and execute the tests in the specified environment, follow these steps:
 
-### Adding to GitHub
+### Prerequisites
 
-  1. Initialize a Git repository:
+1. **Python and Pip**: Ensure Python and pip are installed on your system.
+2. **WebDrivers**: Download the appropriate WebDriver for your browser (e.g., ChromeDriver for Chrome, GeckoDriver for Firefox) and place them in a directory included in your system's PATH.
+3. **Dependencies**: Install the required dependencies from the `requirements.txt` file.
+
+### Steps
+
+   1. **Clone the Repository**: If you haven't already, clone the repository to your local machine.
+      ```sh
+      git clone https://your-repo-url.git
+      cd project_name
+      ```
+
+2. **Install Dependencies**: Install the required Python packages.
+   ```sh
+   pip install -r requirements.txt
+   ```
+
+3. **Running Tests**: Use the `pytest` command with the `--env` option to specify the environment. You can run tests in either the test or staging environment.
+
+   - **Run Tests in the Test Environment**:
      ```sh
-     git init
+     pytest --env test
      ```
-  
-  2. Add all files:
-     ```sh
-     git add .
-     ```
-  
-     3. Commit the changes:
-        ```sh
-        git commit -m "Initial commit"
-        ```
-  
-     4. Add remote repository:
-        ```sh
-        git remote add origin <your-repo-url>
-        ```
-  
-     5. Push to GitHub:
-        ```sh
-        git push -u origin master
-        ```
 
-This setup ensures that the framework is configurable, maintainable, and integrates well with CI pipelines, making it more industry-standard.
+   - **Run Tests in the Staging Environment**:
+     ```sh
+     pytest --env staging
+     ```
+
+Assuming the repository is cloned and you're in the root directory of the project:
+
+1. **Install Dependencies**:
+   ```sh
+   pip install -r requirements.txt
+   ```
+
+2. **Run Tests in the Test Environment**:
+   ```sh
+   pytest --env test
+   ```
+
+   3. **Run Tests in the Staging Environment**:
+      ```
+      pytest --env staging
+      ```
+
+### Pytest Options
+
+You can also use various pytest options to customize the test run. Some useful options include:
+
+- `-m <marker>`: Run tests with the specified marker (e.g., smoke, regression).
+  - `-v`: Increase verbosity.
+  - `-s`: Show print statements.
+  - `--maxfail=<num>`: Stop after a specified number of failures.
+
+### Example with Options
+
+   - **Run Smoke Tests in the Test Environment with Increased Verbosity**:
+     ```sh
+     pytest -m smoke --env test -v
+     ```
+   
+     - **Run Regression Tests in the Staging Environment and Stop After 1 Failure**:
+       ```sh
+       pytest -m regression --env staging --maxfail=1
+       ```
+
+### CI Configuration
+
+In CI pipeline (e.g., GitHub Actions), the configuration will automatically use the specified environment matrix to run the tests in both environments.
+
+```
+
+
+This setup will ensure that tests are executed in both the test and staging environments on each push, providing comprehensive coverage across different environments.

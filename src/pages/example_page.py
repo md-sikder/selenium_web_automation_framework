@@ -1,4 +1,4 @@
-# Structure the POM with clear separation of page elements and actions.
+# Structure the POM with clear separation of page elements and actions..
 from selenium.webdriver.common.by import By
 from src.base.base_driver import BaseDriver
 

@@ -1,4 +1,4 @@
-# Enhance logging with more details and rotating file handler.
+# Enhance logging with more details and rotating file handler..
 
 import logging
 import os

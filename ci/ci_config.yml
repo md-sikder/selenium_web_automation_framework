@@ -4,8 +4,10 @@ on: [push]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        env: [test, staging]
 
     steps:
     - name: Checkout code
@@ -14,7 +16,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.x'
+        python-version: '3.7'
 
     - name: Install dependencies
       run: |
@@ -23,7 +25,7 @@ jobs:
 
     - name: Run tests
       run: |
-        pytest --html=reports/report.html
+        pytest --env ${{ matrix.env }}
       continue-on-error: true
 
     - name: Upload test report
@@ -32,3 +34,4 @@ jobs:
       with:
         name: test-report
         path: reports/report.html
+
