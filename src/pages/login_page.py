@@ -1,30 +1,21 @@
-import time
-
 from selenium.webdriver.common.by import By
-from src.base.base_driver import BaseDriver
+from selenium.webdriver.support import expected_conditions as EC
 
+class LoginPage:
+    USERNAME = (By.ID, "username")
+    PASSWORD = (By.ID, "password")
+    SIGN_IN  = (By.ID, "sign-in")
 
-class LoginPage(BaseDriver):
-    def __init__(self, env='default'):
-        super().__init__(env)
-        self.textbox_username = (By.XPATH, "//input[@id='username']")
-        self.textbox_password = (By.XPATH, "//input[@id='password']")
-        self.button_signIn = (By.XPATH, "//button[@id='sign-in']")
+    def __init__(self, driver, wait):
+        self.driver = driver
+        self.wait = wait
 
-    def maximize_browser(self):
-        return self.driver.maximize_window()
+    def open(self, base_url):
+        self.driver.get(base_url)
+        self.wait.until(EC.visibility_of_element_located(self.USERNAME))
+        return self
 
-    def set_username(self):
-        return self.driver.find_element(*self.textbox_username).send_keys("admin")
-
-    def set_password(self):
-        return self.driver.find_element(*self.textbox_password).send_keys("admin")
-
-    def click_signin_button(self):
-        return self.driver.find_element(*self.button_signIn).click()
-
-    def get_page_title(self):
-        return self.driver.title
-
-    def close_browser(self):
-        self.driver.quit()
+    def login(self, username, password):
+        self.driver.find_element(*self.USERNAME).send_keys(username)
+        self.driver.find_element(*self.PASSWORD).send_keys(password)
+        self.driver.find_element(*self.SIGN_IN).click()

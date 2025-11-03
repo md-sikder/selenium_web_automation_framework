@@ -2,4 +2,4 @@ selenium
 pytest
 pytest-html
 pandas
-pyyamlwebdriver-manager>=4.0.2
+webdriver-manager>=4.0.2
