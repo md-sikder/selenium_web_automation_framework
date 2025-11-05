@@ -2,7 +2,7 @@ default: test
 environments:
   test:
     browser: chrome
-    url: https://console.example/
+    url: https://rahulshettyacademy.com/locatorspractice/
     implicit_wait: 10
     explicit_wait: 10
   staging:

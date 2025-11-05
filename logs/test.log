@@ -1,13 +1,9 @@
-INFO     WDM:logger.py:11 ====== WebDriver manager ======
-INFO     WDM:logger.py:11 Get LATEST chromedriver version for google-chrome
-INFO     WDM:logger.py:11 Get LATEST chromedriver version for google-chrome
-INFO     WDM:logger.py:11 There is no [win64] chromedriver "126.0.6478.127" for browser google-chrome "126.0.6478.127" in cache
-INFO     WDM:logger.py:11 Get LATEST chromedriver version for google-chrome
-INFO     WDM:logger.py:11 WebDriver version 126.0.6478.126 selected
-INFO     WDM:logger.py:11 Modern chrome version https://storage.googleapis.com/chrome-for-testing-public/126.0.6478.126/win32/chromedriver-win32.zip
-INFO     WDM:logger.py:11 About to download new driver from https://storage.googleapis.com/chrome-for-testing-public/126.0.6478.126/win32/chromedriver-win32.zip
-INFO     WDM:logger.py:11 Driver downloading response is 200
-INFO     WDM:logger.py:11 Get LATEST chromedriver version for google-chrome
-INFO     WDM:logger.py:11 Driver has been saved in cache [C:\Users\KloverCloud\.wdm\drivers\chromedriver\win64\126.0.6478.127]
-INFO     root:test_example.py:20 Starting test_example
-2:52:07 PM: INFO: Starting test_example
+2025-11-05 15:17:30,776 [INFO] tests: === START TEST: test_login_smoke ===
+2025-11-05 15:17:30,777 [INFO] tests: LoginPage initialized
+2025-11-05 15:17:30,777 [INFO] tests: Opening URL: https://rahulshettyacademy.com/locatorspractice/
+2025-11-05 15:17:31,715 [INFO] tests: Login page loaded successfully.
+2025-11-05 15:17:31,715 [INFO] tests: Attempting login with username: rahulshettyacademy
+2025-11-05 15:17:31,876 [INFO] tests: Clicked 'Sign In' button.
+2025-11-05 15:17:31,883 [INFO] tests: ✅ TEST PASSED: test_login_smoke
+2025-11-05 15:17:31,883 [INFO] tests: === END TEST: test_login_smoke ===
+

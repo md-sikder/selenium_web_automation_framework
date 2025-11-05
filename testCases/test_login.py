@@ -1,37 +1,27 @@
-# example
-import time
-
 import pytest
+from selenium.webdriver.support import expected_conditions as EC
 from src.pages.login_page import LoginPage
-from src.utilities.logger import LogGen
 from src.utilities.capture_screenshot import capture_screenshot
+from src.utilities.logger import get_logger
 
-logger = LogGen.loggen()
 
+@pytest.mark.smoke
+@pytest.mark.parametrize("username,password,expected_title", [
+    ("rahulshettyacademy", "learning", "Rahul Shetty Academy - Login page"),
+])
+def test_login_smoke(driver, wait, settings, username, password, expected_title):
+    log = get_logger()
+    test_name = "test_login_smoke"
 
-class TestExample:
-    @pytest.fixture(scope="class")
-    def setup(self, request, env):
-        self.page = LoginPage(env=env)
-        request.cls.page = self.page
-        yield
-        self.page.close_browser()
-
-    @pytest.mark.smoke
-    @pytest.mark.usefixtures("setup")
-    def test_example(self):
-        logger.info("Starting test_example")
-        try:
-            self.page.maximize_browser()
-            self.page.set_username()
-            self.page.set_password()
-            self.page.click_signin_button()
-            time.sleep(5)
-            self.page.close_browser()
-            text = self.page.get_page_title()
-            assert text == "Expected Text"
-            logger.info("login test passed")
-        except AssertionError as e:
-            capture_screenshot(self.page.driver, "test_example")
-            logger.error(f"test_example failed: {e}")
-            raise
+    try:
+        log.info(f"=== START TEST: {test_name} ===")
+        LoginPage(driver, wait).open(settings["url"]).login(username, password)
+        wait.until(EC.title_is(expected_title))
+        assert driver.title == expected_title
+        log.info(f"✅ TEST PASSED: {test_name}")
+    except Exception as e:
+        log.error(f"❌ TEST FAILED: {e}")
+        capture_screenshot(driver, test_name)
+        raise
+    finally:
+        log.info(f"=== END TEST: {test_name} ===\n")
