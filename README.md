@@ -1,5 +1,3 @@
----
-
 # 🧪 Web Automation Framework (2025-Ready)
 
 This **Python-based Web Automation Framework** is built with **Selenium 4**, **pytest**, and a modern Page Object Model (POM) structure.
