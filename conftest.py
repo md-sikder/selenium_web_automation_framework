@@ -21,6 +21,13 @@ SCREENSHOTS_DIR = ROOT / "screenshots"
 # ---------- Pytest bootstrapping ----------
 def pytest_addoption(parser):
     parser.addoption("--env", action="store", default=None, help="Environment name")
+    # Manually choose headless mode at runtime; default = GUI (headed)
+    parser.addoption(
+        "--headless",
+        action="store_true",
+        default=False,
+        help="Run tests in headless mode (default: headed/GUI)."
+    )
 
 
 def pytest_sessionstart(session):
@@ -35,18 +42,52 @@ def settings(request):
     return read_config(request.config.getoption("--env"))
 
 
+def _resolve_headless_flag(request) -> bool:
+    """
+    Resolution order (highest to lowest):
+      1) CLI flag: --headless
+      2) Env var: HEADLESS=true/false
+      3) Default: False (GUI)
+    """
+    cli_headless = bool(request.config.getoption("--headless"))
+    if cli_headless:
+        return True
+
+    env_val = os.getenv("HEADLESS")
+    if env_val is not None:
+        return env_val.lower() == "true"
+
+    # Default = GUI
+    return False
+
+
 @pytest.fixture(scope="session")
-def driver(settings):
+def driver(request, settings):
     """Session-scoped WebDriver (Selenium Manager resolves ChromeDriver)."""
+    headless = _resolve_headless_flag(request)
+
     opts = ChromeOptions()
-    if os.getenv("HEADLESS", "true").lower() == "true":
+    if headless:
         opts.add_argument("--headless=new")
         opts.add_argument("--window-size=1920,1080")
+    # Common hardening flags
     opts.add_argument("--disable-gpu")
     opts.add_argument("--no-sandbox")
 
     drv = webdriver.Chrome(options=opts)
     drv.implicitly_wait(settings["implicit_wait"])
+
+    # For GUI mode, maximize to avoid hidden elements
+    if not headless:
+        try:
+            drv.maximize_window()
+        except Exception:
+            pass
+
+    # Log to console so it's obvious which mode is active
+    mode = "HEADLESS" if headless else "GUI"
+    print(f"[conftest] Browser launch mode: {mode}")
+
     yield drv
     drv.quit()
 
@@ -60,7 +101,6 @@ def wait(driver, settings):
 # ---------- Failure screenshot hook ----------
 def _sanitize_file_component(text: str) -> str:
     """Make a safe filename part from a nodeid/test name."""
-    # Replace path separators and pytest's :: with underscores, remove bad chars
     text = text.replace(os.sep, "_").replace("::", "_")
     return re.sub(r'[^A-Za-z0-9._-]+', "_", text)
 
@@ -75,37 +115,29 @@ def pytest_runtest_makereport(item, call):
     outcome = yield
     rep = outcome.get_result()
 
-    # Only on the 'call' phase (i.e., the test body), and only on failure
     if rep.when != "call" or rep.passed:
         return
 
     driver = item.funcargs.get("driver", None)
     if not driver:
-        return  # No driver fixture available for this test
+        return
 
-    # Build a unique, sanitized file name
     ts = int(time.time())
     base = _sanitize_file_component(item.nodeid) or "test"
     png_path = SCREENSHOTS_DIR / f"{base}_{ts}.png"
 
-    # Attempt screenshot
     try:
         driver.save_screenshot(str(png_path))
     except Exception:
-        # Don't break reporting if screenshot fails
         return
 
-    # If pytest-html is installed, attach the image to the report
     plugin = item.config.pluginmanager.getplugin("html")
     if plugin:
         try:
             from pytest_html import extras
         except Exception:
             return
-
-        # Ensure rep.extra exists
         extra = getattr(rep, "extra", [])
-        # Add embedded image and a link to open the file
         extra.append(extras.image(str(png_path)))
         extra.append(extras.url(str(png_path), name="Open screenshot"))
         rep.extra = extra
