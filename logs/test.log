@@ -1,6 +1,11 @@
-INFO     tests:login_page.py:57 LoginPage initialized
-INFO     tests:login_page.py:60 Opening URL: https://rahulshettyacademy.com/locatorspractice/
-INFO     tests:login_page.py:64 Login page loaded successfully.
-INFO     tests:login_page.py:68 Attempting to log in with username: admin
-INFO     tests:login_page.py:82 Sign In button clicked.
-sts: Sign In button clicked.
+INFO     tests:test_login.py:32 === START TEST: test_login_smoke ===
+INFO     tests:login_page.py:18 LoginPage initialized
+INFO     tests:login_page.py:22 Opening URL: https://rahulshettyacademy.com/locatorspractice/
+INFO     tests:login_page.py:25 Login page loaded successfully.
+INFO     tests:login_page.py:34 Attempting login with username: rahulshettyacademy
+INFO     tests:login_page.py:47 Clicked 'Sign In' button.
+INFO     tests:test_login.py:36 ✅ TEST PASSED: test_login_smoke
+INFO     tests:test_login.py:42 === END TEST: test_login_smoke ===
+
+==
+
