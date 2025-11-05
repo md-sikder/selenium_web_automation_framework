@@ -1,11 +1,9 @@
-INFO     tests:test_login.py:32 === START TEST: test_login_smoke ===
-INFO     tests:login_page.py:18 LoginPage initialized
-INFO     tests:login_page.py:22 Opening URL: https://rahulshettyacademy.com/locatorspractice/
-INFO     tests:login_page.py:25 Login page loaded successfully.
-INFO     tests:login_page.py:34 Attempting login with username: rahulshettyacademy
-INFO     tests:login_page.py:47 Clicked 'Sign In' button.
-INFO     tests:test_login.py:36 ✅ TEST PASSED: test_login_smoke
-INFO     tests:test_login.py:42 === END TEST: test_login_smoke ===
-
-==
+2025-11-05 15:17:30,776 [INFO] tests: === START TEST: test_login_smoke ===
+2025-11-05 15:17:30,777 [INFO] tests: LoginPage initialized
+2025-11-05 15:17:30,777 [INFO] tests: Opening URL: https://rahulshettyacademy.com/locatorspractice/
+2025-11-05 15:17:31,715 [INFO] tests: Login page loaded successfully.
+2025-11-05 15:17:31,715 [INFO] tests: Attempting login with username: rahulshettyacademy
+2025-11-05 15:17:31,876 [INFO] tests: Clicked 'Sign In' button.
+2025-11-05 15:17:31,883 [INFO] tests: ✅ TEST PASSED: test_login_smoke
+2025-11-05 15:17:31,883 [INFO] tests: === END TEST: test_login_smoke ===
 
